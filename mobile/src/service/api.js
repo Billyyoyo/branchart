@@ -173,5 +173,8 @@ export const api = {
   },
   getFavoriteList: function () {
     return get('/fav/list')
+  },
+  search: function (form) {
+    return get('/search', form)
   }
 }

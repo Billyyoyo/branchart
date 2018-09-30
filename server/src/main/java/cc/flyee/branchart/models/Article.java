@@ -20,6 +20,7 @@ public class Article extends BaseModel {
     private Integer readCount=0;
     private Integer version;
     private String[] tags;
+    private String searchId;
 
     public Integer getReadCount() {
         return readCount;
@@ -119,6 +120,14 @@ public class Article extends BaseModel {
 
     public Integer getDislikeCount() {
         return dislikeCount;
+    }
+
+    public String getSearchId() {
+        return searchId;
+    }
+
+    public void setSearchId(String searchId) {
+        this.searchId = searchId;
     }
 
     public void setDislikeCount(Integer dislikeCount) {

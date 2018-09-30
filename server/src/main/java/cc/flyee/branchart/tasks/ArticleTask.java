@@ -1,6 +1,8 @@
 package cc.flyee.branchart.tasks;
 
 import cc.flyee.branchart.models.*;
+import cc.flyee.branchart.services.ArticleRepository;
+import cc.flyee.branchart.services.DocRepository;
 import cc.flyee.branchart.services.NewsRepository;
 import cc.flyee.branchart.services.SocialRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +31,14 @@ public class ArticleTask {
     @Autowired
     SocialRepository socialRepository;
     @Autowired
+    DocRepository docRepository;
+    @Autowired
+    ArticleRepository articleRepository;
+    @Autowired
     private MessageSource messageSource;
 
     @Async
-    public void createArticle(Article article) {
+    public void createArticle(Article article, Content content) {
         Locale locale = LocaleContextHolder.getLocale();
         String message = messageSource.getMessage("text.some_one_publish", null, locale);
         List<Social> relations = socialRepository.findByIdolIdAndType(article.getOwnerId(), Social.TYPE_NORMAL);
@@ -48,6 +54,18 @@ public class ArticleTask {
             news.setWhat(message);
             newsRepository.save(news);
         }
+        Doc doc = new Doc();
+        doc.setOwnerId(article.getOwnerId());
+        doc.setOwnerName(article.getOwnerName());
+        doc.setTitle(article.getTitle());
+        doc.setDescription(article.getDescription());
+        doc.setContent(content.getContent());
+        doc.setCreateTime(article.getCreateTime());
+        doc.setModifyTime(article.getModifyTime());
+        doc.setArticleId(article.getId());
+        docRepository.save(doc);
+        article.setSearchId(doc.getId());
+        articleRepository.save(article);
     }
 
 }

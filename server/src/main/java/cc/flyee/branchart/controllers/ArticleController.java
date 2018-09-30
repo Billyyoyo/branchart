@@ -47,11 +47,6 @@ public class ArticleController {
     @Autowired
     private ArticleTask articleTask;
 
-    @GetMapping(value = "/search")
-    public ResultEntry search() {
-        throw new LogicException(ResultCode.ERROR_INTERNAL);
-    }
-
     /**
      * 查询
      *
@@ -182,7 +177,7 @@ public class ArticleController {
             mongoTemplate.updateFirst(new Query(new Criteria("id").is(form.getLowerId())), new Update().addToSet("upperIds", form.getLowerId()), Article.class);
         }
         mongoTemplate.updateFirst(new Query(new Criteria("userId").is(userId)), new Update().inc("articleCount", 1), UserExtra.class);
-        articleTask.createArticle(article);
+        articleTask.createArticle(article, content);
         return new ResultEntry(ResultCode.SUCCESS, ResultData.build().put("article", article).put("content", content).getData());
     }
 

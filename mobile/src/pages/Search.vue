@@ -44,6 +44,7 @@ export default {
   mixins: [util],
   data: function () {
     return {
+      keyword: '',
       fullWidth: true,
       rowsMax: 0,
       title: '',
@@ -74,7 +75,7 @@ export default {
         }
       }
       localStorage.setItem('ba_search_keywords', JSON.stringify(this.latestKeywords))
-      this.$router.push({path: '/searchresult', query: {title: this.title}})
+      this.$router.push({path: '/searchresult', query: {title: this.keyword}})
     }
   },
   created: function () {
